@@ -1,4 +1,7 @@
-(ns hassuimmat-sanat.core)
+(ns hassuimmat-sanat.core
+  (:require [cheshire.core :as cheshire])
+  (:gen-class
+   :methods [^:static [handler [String] String]]))
 
 ;; A pattern used to determine which characters are allowed in a word
 (def word-characters-pattern #"[a-zA-ZåÅäÄöÖüÜ-]+")
@@ -154,13 +157,17 @@
 (defn max-from-indexed-coll [indexed-coll]
   (apply max (map (fn[[_ x]] x) indexed-coll)))
 
-(defn -main [& args]
-  (let [filename "alastalon_salissa.txt"
-        word-coll (read-word-coll filename)
+(defn read-funniest-words [filename]
+  (let [word-coll (read-word-coll filename)
         indexed-funny-point-coll (read-indexed-funny-points filename)
         max-funny-points (max-from-indexed-coll indexed-funny-point-coll)]
-    (println
-      (map #(get (into [] word-coll) %)
-           (map (fn[[x _]] x)
-                (filter (fn[[_ x]] (== x max-funny-points))
-                        indexed-funny-point-coll))))))
+    (map #(get (into [] word-coll) %)
+         (map (fn[[x _]] x)
+              (filter (fn[[_ x]] (== x max-funny-points))
+                      indexed-funny-point-coll)))))
+
+(defn -handler [s]
+  (cheshire/generate-string (read-funniest-words "alastalon_salissa.txt")))
+
+(defn -main [& args]
+  (println (read-funniest-words "alastalon_salissa.txt")))

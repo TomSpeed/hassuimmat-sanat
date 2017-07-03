@@ -76,11 +76,5 @@
              (max-from-indexed-coll '([0 45] [1 312] [2 1])) => 312)
 
        (fact "It all works"
-             (let [word-coll (read-word-coll filename)
-                   indexed-funny-point-coll (read-indexed-funny-points filename)
-                   max-funny-points (max-from-indexed-coll indexed-funny-point-coll)]
-               (map #(get (into [] word-coll) %)
-                    (map (fn[[x _]] x)
-                         (filter (fn[[_ x]] (== x max-funny-points))
-                                 indexed-funny-point-coll))))
+             (read-funniest-words filename)
              => '("slüupissa")))
