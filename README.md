@@ -35,6 +35,9 @@ lein run
 Test:
 lein midje
 
+Can be run in AWS Lambda (API Gateways not yet supported).
+See the doc directory for a screenshot of a successful AWS Lambda test output. 
+
 ## License
 
 Copyright © 2017 Tomi Piri
