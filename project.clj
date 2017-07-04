@@ -4,7 +4,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :main hassuimmat-sanat.core
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [cheshire "5.7.1"]
+                 [org.clojure/data.json "0.2.6"]
                  [com.amazonaws/aws-lambda-java-core "1.0.0"]]
   :resource-paths ["resources/prod"]
   :profiles {:dev {:dependencies [[midje "1.8.3"]]

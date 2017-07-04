@@ -1,7 +1,8 @@
 (ns hassuimmat-sanat.core
-  (:require [cheshire.core :as cheshire])
+  (:require [clojure.data.json :as json]
+            [clojure.java.io :as io])
   (:gen-class
-   :methods [^:static [handler [String] String]]))
+   :implements [com.amazonaws.services.lambda.runtime.RequestStreamHandler]))
 
 ;; A pattern used to determine which characters are allowed in a word
 (def word-characters-pattern #"[a-zA-ZåÅäÄöÖüÜ-]+")
@@ -9,12 +10,14 @@
 ;; A pattern used to determine which characters are not vowels in a word
 (def non-vowel-pattern #"[BbCcDdFfGgHhJjKkLlMmNnPpQqRrSsTtVvWwXxZz-]+")
 
+(def book-filename "alastalon_salissa.txt")
+
 ;; Reads a resource file
 ;; Parameters
 ;;     filename : String
 ;;         - The name of the file to be read
 (defn read-file [filename]
-  (slurp (clojure.java.io/resource filename)))
+  (slurp (io/resource filename)))
 
 ;; Creates a collection of separate words from text
 ;; Uses word-characters-pattern
@@ -166,8 +169,11 @@
               (filter (fn[[_ x]] (== x max-funny-points))
                       indexed-funny-point-coll)))))
 
-(defn -handler [s]
-  (cheshire/generate-string (read-funniest-words "alastalon_salissa.txt")))
+(defn -handleRequest [this is os context]
+  (let [w (io/writer os)]
+    (-> (read-funniest-words book-filename)
+        (json/write w))
+    (.flush w)))
 
 (defn -main [& args]
-  (println (read-funniest-words "alastalon_salissa.txt")))
+  (println (read-funniest-words book-filename)))
