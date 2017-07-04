@@ -36,12 +36,13 @@ Test:
 lein midje
 
 Can be run in AWS Lambda.
-
 See the doc directory for a screenshot of a successful AWS Lambda test output. 
 
-The result can be found at:
-
+The result can be seen at:
 https://tomipiri.me/wundernut/
+
+The webpage contains a simple frontend that calls AWS API Gateway with GET method and API Gateway calls the Lambda function.
+Result is then showed at the page. Note: the function call takes a while to return the results.
 
 ## License
 
