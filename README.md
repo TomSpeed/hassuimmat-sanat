@@ -41,6 +41,9 @@ See the doc directory for a screenshot of a successful AWS Lambda test output.
 The result can be seen at:
 https://tomipiri.me/wundernut/
 
+The webpage contains a simple frontend that calls AWS API Gateway with GET method and API Gateway calls the Lambda function.
+Result is then showed at the page.
+
 ## License
 
 Copyright © 2017 Tomi Piri
