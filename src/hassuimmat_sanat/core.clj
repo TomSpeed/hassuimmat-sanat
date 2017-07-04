@@ -160,6 +160,10 @@
 (defn max-from-indexed-coll [indexed-coll]
   (apply max (map (fn[[_ x]] x) indexed-coll)))
 
+;; Uses all the above functions together to read the funniest words of a book
+;; Parameter
+;;     filename : String
+;;         - The name of the file to be read
 (defn read-funniest-words [filename]
   (let [word-coll (read-word-coll filename)
         indexed-funny-point-coll (read-indexed-funny-points filename)
@@ -169,11 +173,14 @@
               (filter (fn[[_ x]] (== x max-funny-points))
                       indexed-funny-point-coll)))))
 
+;; Handler function for handling AWS Lambda request
+;; Returns the funniest word(s) in json format
 (defn -handleRequest [this is os context]
   (let [w (io/writer os)]
     (-> (read-funniest-words book-filename)
         (json/write w))
     (.flush w)))
 
+;; Main function
 (defn -main [& args]
   (println (read-funniest-words book-filename)))
