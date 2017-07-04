@@ -5,7 +5,7 @@
   :main hassuimmat-sanat.core
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/data.json "0.2.6"]
-                 [com.amazonaws/aws-lambda-java-core "1.0.0"]]
+                 [uswitch/lambada "0.1.2"]]
   :resource-paths ["resources/prod"]
   :profiles {:dev {:dependencies [[midje "1.8.3"]]
                     :plugins [[lein-midje "3.2"]]

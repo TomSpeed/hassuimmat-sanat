@@ -1,8 +1,8 @@
 (ns hassuimmat-sanat.core
   (:require [clojure.data.json :as json]
-            [clojure.java.io :as io])
-  (:gen-class
-   :implements [com.amazonaws.services.lambda.runtime.RequestStreamHandler]))
+            [clojure.java.io :as io]
+            [uswitch.lambada.core :refer [deflambdafn]])
+  (:gen-class))
 
 ;; A pattern used to determine which characters are allowed in a word
 (def word-characters-pattern #"[a-zA-ZåÅäÄöÖüÜ-]+")
@@ -175,11 +175,12 @@
 
 ;; Handler function for handling AWS Lambda request
 ;; Returns the funniest word(s) in json format
-(defn -handleRequest [this is os context]
-  (let [w (io/writer os)]
-    (-> (read-funniest-words book-filename)
-        (json/write w))
-    (.flush w)))
+(deflambdafn hassuimmat-sanat.core.handleRequest
+  [in out ctx]
+  (let [event (json/read (io/reader in))
+        res (read-funniest-words book-filename)]
+    (with-open [w (io/writer out)]
+      (json/write res w))))
 
 ;; Main function
 (defn -main [& args]
